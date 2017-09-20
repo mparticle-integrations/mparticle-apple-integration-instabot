@@ -84,7 +84,7 @@
         return nil;
     }
     
-    [ROKOMobi startWithAPIToken:appKey];
+    [ROKOComponentManager sharedManager].apiToken = appKey;
     
     _configuration = configuration;
 
