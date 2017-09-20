@@ -1,5 +1,5 @@
 //
-//  MPKitROKOMobi.m
+//  MPKitInstabot.m
 //
 //  Copyright 2017 ROKO Labs, Inc.
 //
@@ -16,16 +16,16 @@
 //  limitations under the License.
 //
 
-#import "MPKitROKOMobi.h"
+#import "MPKitInstabot.h"
 
-@interface MPKitROKOMobiProxy: NSObject <MPKitROKOMobiProvider>
+@interface MPKitInstabotProxy: NSObject <MPKitInstabotProvider>
 
 @property (nonatomic, strong) ROKOInstaBot *instabot;
 @property (nonatomic, strong) ROKOLinkManager *linkManager;
 
 @end
 
-@implementation MPKitROKOMobiProxy
+@implementation MPKitInstabotProxy
 
 - (ROKOInstaBot *)getInstaBot {
     @synchronized (self) {
@@ -47,20 +47,20 @@
 
 @end
 
-@interface MPKitROKOMobi() <ROKOLinkManagerDelegate>
+@interface MPKitInstabot() <ROKOLinkManagerDelegate>
 
 @property (nonatomic, strong) ROKOPush *pusher;
 @property (nonatomic, strong) ROKOLinkManager *linkManager;
-@property (nonatomic, strong) id <MPKitROKOMobiProvider> proxy;
+@property (nonatomic, strong) id <MPKitInstabotProvider> proxy;
 
 @end
 
-@implementation MPKitROKOMobi
+@implementation MPKitInstabot
 
-- (id <MPKitROKOMobiProvider>)proxy {
+- (id <MPKitInstabotProvider>)proxy {
     @synchronized (self) {
         if (!_proxy) {
-            _proxy = [[MPKitROKOMobiProxy alloc] init];
+            _proxy = [[MPKitInstabotProxy alloc] init];
         }
         return _proxy;
     }
@@ -70,7 +70,7 @@
 }
 
 + (void)load {
-    MPKitRegister *kitRegister = [[MPKitRegister alloc] initWithName:@"ROKOMobi" className:@"MPKitROKOMobi" startImmediately:YES];
+    MPKitRegister *kitRegister = [[MPKitRegister alloc] initWithName:@"ROKOMobi" className:@"MPKitInstabot" startImmediately:YES];
     [MParticle registerExtension:kitRegister];
 }
 
@@ -83,7 +83,9 @@
     if (!self || !appKey) {
         return nil;
     }
-
+    
+    [ROKOMobi startWithAPIToken:appKey];
+    
     _configuration = configuration;
 
     if (startImmediately) {
@@ -98,7 +100,6 @@
 
     dispatch_once(&kitPredicate, ^{
         _started = YES;
-        [ROKOComponentManager sharedManager];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *userInfo = @{mParticleKitInstanceKey:[[self class] kitCode]};
 
@@ -118,26 +119,26 @@
 
 - (nonnull MPKitExecStatus *)continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(void(^ _Nonnull)(NSArray * _Nullable restorableObjects))restorationHandler {
     [self.proxy.getLinkManager continueUserActivity:userActivity];
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
 - (nonnull MPKitExecStatus *)openURL:(nonnull NSURL *)url options:(nullable NSDictionary<NSString *, id> *)options {
     [self.proxy.getLinkManager handleDeepLink:url];
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
 - (nonnull MPKitExecStatus *)openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nullable id)annotation {
     [self.proxy.getLinkManager handleDeepLink:url];
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
 #pragma mark Push
 
 - (MPKitExecStatus *)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo {
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
@@ -146,7 +147,7 @@
         [_pusher handleNotification:userInfo];
     }
     
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
@@ -156,7 +157,7 @@
         if (error) NSLog(@"Failed to register with error - %@", error);
     }];
     
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
@@ -169,18 +170,22 @@
         if (error) NSLog(@"%@", error);
     }];
     
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
 - (MPKitExecStatus *)setUserIdentity:(NSString *)identityString identityType:(MPUserIdentity)identityType {
     ROKOPortalManager *portalManager = [ROKOComponentManager sharedManager].portalManager;
-     
+    
+    if (identityType != MPUserIdentityAlias) {
+        return [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeCannotExecute];
+    }
+    
     [portalManager setUserWithName:identityString referralCode:nil linkShareChannel:nil completionBlock:^(NSError * _Nullable error) {
         if (error) NSLog(@"%@", error);
     }];
      
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
@@ -188,7 +193,7 @@
     [[ROKOComponentManager sharedManager].portalManager logoutWithCompletionBlock:^(NSError * _Nullable error) {
         if (error) NSLog(@"%@", error);
     }];
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 
@@ -200,7 +205,7 @@
     } else {
         [ROKOLogger addEvent:event.name];
     }
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceROKOMobi) returnCode:MPKitReturnCodeSuccess];
+    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
     return execStatus;
 }
 

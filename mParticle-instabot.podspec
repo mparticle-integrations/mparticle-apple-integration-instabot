@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-    s.name             = "mParticle-ROKOMobi"
+    s.name             = "mParticle-instabot"
     s.version          = "1.0.0"
-    s.summary          = "ROKOMobi integration for mParticle"
+    s.summary          = "Instabot integration for mParticle"
 
     s.description      = <<-DESC
-                       This is the ROKOMobi integration for mParticle.
+                       This is the Instabot integration for mParticle.
                        DESC
 
     s.homepage         = "https://www.mparticle.com"
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
     s.social_media_url = "https://twitter.com/rokolabs"
 
     s.ios.deployment_target = "8.0"
-    s.ios.source_files      = 'mParticle-ROKOMobi/*.{h,m,mm}'
-    s.ios.dependency 'mParticle-Apple-SDK/mParticle'
+    s.ios.source_files      = 'mParticle-instabot/*.{h,m,mm}'
+    s.ios.dependency 'mParticle-Apple-SDK/mParticle', '~> 6.15.0'
     s.ios.dependency 'ROKO.Mobi'
 end

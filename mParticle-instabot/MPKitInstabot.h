@@ -1,5 +1,5 @@
 //
-//  MPKitROKOMobi.h
+//  MPKitInstabot.h
 //
 //  Copyright 2017 ROKO Labs, Inc.
 //
@@ -23,13 +23,9 @@
 #import "mParticle.h"
 #endif
 
-#if defined(__has_include) && __has_include(<ROKOMobi/ROKOMobi.h>)
 #import <ROKOMobi/ROKOMobi.h>
-#else
-#import "ROKOMobi.h"
-#endif
 
-@protocol MPKitROKOMobiProvider
+@protocol MPKitInstabotProvider
 
 /**
  * Provides direct access to ROKOInstaBot object.
@@ -47,7 +43,7 @@
 
 @end
 
-@interface MPKitROKOMobi : NSObject <MPKitProtocol>
+@interface MPKitInstabot : NSObject <MPKitProtocol>
 
 @property (nonatomic, strong, nonnull) NSDictionary *configuration;
 @property (nonatomic, strong, nullable) NSDictionary *launchOptions;
