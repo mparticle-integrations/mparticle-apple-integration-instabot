@@ -177,16 +177,12 @@
 - (MPKitExecStatus *)setUserIdentity:(NSString *)identityString identityType:(MPUserIdentity)identityType {
     ROKOPortalManager *portalManager = [ROKOComponentManager sharedManager].portalManager;
     
-    if (identityType != MPUserIdentityAlias) {
+    if (identityType == MPUserIdentityCustomerId || identityType == MPUserIdentityEmail) {
+        [portalManager setUserWithName:identityString referralCode:nil linkShareChannel:nil completionBlock:^(NSError * _Nullable error) {}];
+        return [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
+    } else {
         return [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeCannotExecute];
     }
-    
-    [portalManager setUserWithName:identityString referralCode:nil linkShareChannel:nil completionBlock:^(NSError * _Nullable error) {
-        if (error) NSLog(@"%@", error);
-    }];
-     
-    MPKitExecStatus *execStatus = [[MPKitExecStatus alloc] initWithSDKCode:@(MPKitInstanceInstabot) returnCode:MPKitReturnCodeSuccess];
-    return execStatus;
 }
 
 - (MPKitExecStatus *)logout {
