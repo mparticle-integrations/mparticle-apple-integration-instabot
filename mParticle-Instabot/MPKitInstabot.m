@@ -70,7 +70,7 @@
 }
 
 + (void)load {
-    MPKitRegister *kitRegister = [[MPKitRegister alloc] initWithName:@"ROKOMobi" className:@"MPKitInstabot"];
+    MPKitRegister *kitRegister = [[MPKitRegister alloc] initWithName:@"Instabot" className:@"MPKitInstabot"];
     [MParticle registerExtension:kitRegister];
 }
 
