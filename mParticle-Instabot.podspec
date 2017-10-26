@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = "mParticle-Instabot"
-    s.version          = "6.15.14"
+    s.version          = "6.15.15"
     s.summary          = "Instabot integration for mParticle"
 
     s.description      = <<-DESC
