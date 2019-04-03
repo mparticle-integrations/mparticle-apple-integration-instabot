@@ -100,7 +100,7 @@
     static dispatch_once_t kitPredicate;
 
     dispatch_once(&kitPredicate, ^{
-        _started = YES;
+        self->_started = YES;
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *userInfo = @{mParticleKitInstanceKey:[[self class] kitCode]};
 
