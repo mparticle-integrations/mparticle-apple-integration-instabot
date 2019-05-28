@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = "mParticle-Instabot"
-    s.version          = "7.9.1"
+    s.version          = "7.10.0"
     s.summary          = "Instabot integration for mParticle"
 
     s.description      = <<-DESC
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 
     s.ios.deployment_target = "8.0"
     s.ios.source_files      = 'mParticle-Instabot/*.{h,m,mm}'
-    s.ios.dependency 'mParticle-Apple-SDK/mParticle', '~> 7.9.0'
+    s.ios.dependency 'mParticle-Apple-SDK/mParticle', '~> 7.10.0'
     s.ios.dependency 'ROKO.Mobi'
     s.ios.pod_target_xcconfig = {
         'FRAMEWORK_SEARCH_PATHS' => '$(inherited) $(PODS_ROOT)/ROKO.Mobi/**',
